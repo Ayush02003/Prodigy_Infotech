@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+      * {
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+    scroll-behavior: smooths;
+}
+        body{
+            background-image: linear-gradient(to bottom right, rgb(15 12 22), rgb(186 116 156));
+        }
+        .main_container{
+            padding: 95px 0px;
+        }
+        .main_container .container{
+            background-image: url('bg.jpg');
+            background-size: 214% 282%;
+            background-repeat: no-repeat;
+            background-position-y: -100px;
+            margin: auto;
+            box-sizing: border-box;
+            height: 450px;
+            width: 320px;  
+            box-shadow: 0px 0px 20px black;
+            border-radius: 5px;
+        }
+        .upper-container img{
+            width: 50%;
+            height: 60%;
+        }
+        .upper-container{
+            font-size: 40px;
+            color: rgb(192, 188, 188);
+            height: 20%;
+            padding: 50px 0px 0px 60px;
+        }
+        .middle-container{
+            padding: 0px 30px;
+            height: 10%;
+        }
+        #buttons{
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+        
+        }
+        .middle-container .btn{
+            font-weight: 600;
+            padding: 15px 40px;
+            border-radius: 10px;
+            border: none;
+        }
+        .btn:hover{
+            cursor: pointer;
+        }
+        #reset{
+            background-image: linear-gradient(to bottom right, rgb(255 255 255), rgb(186 116 156));
+        }
+        #start,#stop{
+            background-image: linear-gradient(to bottom right, rgb(255 255 255), rgb(186 116 156));
+      
+        }
+        .lower-container{
+            color:rgb(61, 60, 60);
+            height: 30%;
+            display: flex;
+            padding: 50px 0px 0px 50px;
+        }
+        .lower-container .left-container{
+            /* display: inline-block; */
+            height: 100%;
+            width: 25%;
+        }
+        .lower-container .right-container{
+            width: 75%;
+            height: 100%;
+            letter-spacing: 1px;
+            color: rgb(232, 232, 232);
+            font-size: 18px;
+            padding: 10px 13px 0px 20px;
+        }
+        .right-container span{
+            display: block;
+            padding-bottom: 10px;
+        }
+        .lower-container button{
+            border-radius: 50%;
+            border: none;
+            padding: 8px 15px;
+            font-size: 25px;
+            background-image: linear-gradient(to bottom right, rgb(255 255 255), rgb(186 116 156));
+        }
+        .lower-container button:hover{
+            cursor: pointer;
+        }
+        #laps {
+            height: 105%;
+            overflow: auto;
+            /* scrollbar-width: thin; */
+            scrollbar-color: #653131 #c49fb7;
+        }
+        #laps::-webkit-scrollbar-track {
+            background: #820a0a;
+        }
+        #laps::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 6px;
+        }
+    </style>
+</head>
+<body>
+    <div class="main_container">
+        <div class="container">
+            <div class="upper-container">
+                <div id="time"> 
+                    <span class="digit" id="min"> 
+                        00</span> :
+                    <span class="digit" id="sec"> 
+                        00</span> :
+                    <span class="digit" id="ms"> 
+                        00</span>  
+                </div>
+            </div>
+            <div class="middle-container">
+                <div id="buttons"> 
+                    <button class="btn" id="reset"> 
+                        Reset</button> 
+                    <button class="btn" id="start"> 
+                        Start</button> 
+                </div>  
+            </div>
+            <div class="lower-container">
+                <div class="left-container"><button id="add_lap">+</button></div>
+                <div class="right-container">
+                    <div id="laps">
+                    </div>
+                </div>
+            </div>
+        </div>     
+    </div>
+</body>
+</html>
+<script>
+    let start = document.getElementById('start');
+    let stop = document.getElementById('stop');
+    let reset = document.getElementById('reset');
+    let lap = document.getElementById('laps');
+    let add_lap = document.getElementById('add_lap');
+    let ms = 0;
+    let sec = 0;
+    let min = 0;
+    let inter;
+    let tmp = 0;
+    let cnt = 0;
+    add_lap.addEventListener('click',()=>{
+        cnt++;
+       let sp = document.createElement('span');
+       sp.innerHTML = "Lap "+cnt+" - "+((min < 10) ? '0' + min : min)+":"+((sec < 10) ? '0' + sec : sec)+":"+((ms < 10) ? '0' + ms : ms);
+       lap.appendChild(sp);
+    })
+    start.addEventListener('click',()=>{
+        start.innerText = 'stop';
+        // alert("start");
+        if(tmp == 0)
+       inter = setInterval(start_timer,20);
+        else{
+            clearInterval(inter);
+            tmp = 0;
+            start.innerText = 'start';
+        }
+x
+    })
+    function start_timer(){
+        tmp = 1;
+        ms++;
+        document.getElementById('ms').innerHTML = (ms < 10) ? '0' + ms : ms; 
+        if(ms>59){
+            sec++;
+            ms=0;    
+            document.getElementById('sec').innerHTML = (sec < 10) ? '0' + sec : sec;   
+        }
+        if(sec>59){
+        sec=0;    
+        min++;
+        document.getElementById('min').innerHTML = (min < 10) ? '0' + min : min;     
+        }
+    }
+    reset.addEventListener('click',()=>{
+        lap.innerHTML="";
+        document.getElementById('ms').innerHTML = "00"; 
+        document.getElementById('sec').innerHTML = "00"; 
+        document.getElementById('min').innerHTML = "00";
+        min = 0;
+        sec = 0;
+        ms = 0;
+        start.innerText = 'start';
+        clearInterval(inter);
+    })
+</script>

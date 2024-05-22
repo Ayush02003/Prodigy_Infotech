@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        font-family: sans-serif;
+        scroll-behavior: smooths;
+      }
+      body {
+        background-image: url("bg.jpg");
+        background-repeat: no-repeat;
+        background-size: cover;
+      }
+      .main_container {
+        padding: 80px 0px;
+      }
+      .main_container .container {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        margin: auto;
+        box-sizing: border-box;
+        height: 320px;
+        width: 320px;
+        box-shadow: 0px 0px 20px rgb(91 91 91);
+        border: none;
+        border-radius: 5px;
+      }
+      .container button img {
+        position: absolute;
+        z-index: 2;
+        left: 0;
+        right: 0;
+        top: 0;
+        width: 100%;
+      }
+      .container button {
+        /* border: none; */
+        border-color: #100c0a;
+        outline: none;
+
+        text-decoration: none;
+        position: relative;
+        z-index: 1;
+        color: white;
+        background-image: url("bg-box.jpg");
+      }
+      button img[src="cross.png"] {
+        width: 85px; 
+        height: 85px; 
+        padding: 8px 0px 0px 10px;
+      }
+
+      h1 {
+        color: #cdbfad;
+        font-size: 45px;
+        text-align: center;
+        padding-bottom: 30px;
+      }
+      h2 {
+        color: #c9c2b9;
+        font-size: 35px;
+        text-align: center;
+        padding-top: 30px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="main_container">
+      <h1>Tic - Tac - Toe</h1>
+      <div class="container">
+        <button class="btn" id="0"></button>
+        <button class="btn" id="1"></button>
+        <button class="btn" id="2"></button>
+        <button class="btn" id="3"></button>
+        <button class="btn" id="4"></button>
+        <button class="btn" id="5"></button>
+        <button class="btn" id="6"></button>
+        <button class="btn" id="7"></button>
+        <button class="btn" id="8"></button>
+      </div>
+      <h2 id="turn"></h2>
+    </div>
+  </body>
+</html>
+<script>
+  document.getElementById("turn").innerHTML = "X Turn";
+  const winningConditions = [
+    [0, 1, 2],
+    [3, 4, 5],
+    [6, 7, 8],
+    [0, 3, 6],
+    [1, 4, 7],
+    [2, 5, 8],
+    [0, 4, 8],
+    [2, 4, 6],
+  ];
+  let tmp = 0;
+  let xid = [];
+  let oid = [];
+  document.querySelectorAll(".btn").forEach((button) => {
+    button.addEventListener("click", (event) => {
+      const img = document.createElement("img");
+      const btnid = event.currentTarget.id;
+      if (tmp == 0) {
+        img.src = "cross.png";
+        tmp = 1;
+        document.getElementById("turn").innerHTML = "O Turn";
+        xid.push(Number(btnid));
+      } else if (tmp == 1) {
+        img.src = "round.png";
+        tmp = 0;
+
+        document.getElementById("turn").innerHTML = "X Turn";
+        oid.push(Number(btnid));
+      }
+
+      button.appendChild(img);
+      button.disabled = true;
+      xid.sort();
+      oid.sort();
+      console.log(xid);
+      console.log(oid);
+      checkwin(xid, oid);
+    });
+  });
+
+  function checkwin(xid, oid) {
+    for (let i = 0; i < winningConditions.length; i++) {
+      let xWin = true;
+      let oWin = true;
+
+      for (let j = 0; j < winningConditions[i].length; j++) {
+        if (!xid.includes(winningConditions[i][j])) {
+          xWin = false;
+        }
+        if (!oid.includes(winningConditions[i][j])) {
+          oWin = false;
+        }
+      }
+
+      if (xWin) {
+        alert("X Wins");
+        location.reload();
+        return;
+      }
+      if (oWin) {
+        alert("O Wins");
+        location.reload();
+        return;
+      }
+      if((xid.length + oid.length) == 9){
+        alert("Draw !");
+        location.reload();
+        return;
+      }
+    }
+   
+  }
+</script>
